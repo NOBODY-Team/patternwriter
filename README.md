@@ -6,11 +6,12 @@ Ultraminimalistic open-source writing software.
 # Functionality
 
 ## Writing
+
 PatternWriter utilizes writing based on richtext markdown, rather than UI input.
 
 > [DISCLAIMER]
 
-> PatternWriter only currently supports one singular font, Courier New, although this will change in the future.
+> PatternWriter only currently supports one singular font, Courier New, although this will change in the future. Text is bold by default because of this.
 
 ### PatternWriter Richtext Writing Reference
 
@@ -20,3 +21,21 @@ PatternWriter utilizes writing based on richtext markdown, rather than UI input.
 | `Text Alignment - <align=[left/center/right]>` | The alignment of the written text. | `<align=center>Hello` would output the text `Hello` aligned to the center of the writing field. |
 | `Font Color - <color=[color]>` | The color of the font. Default is black. | `<color=cyan>Hello` would output the text `Hello` as blue.  |
 | `Italics - <i>[text]</i>` | Italic text. | `<i>Hello</i>` would output `Hello` as italic. |
+
+## Text Editing Window
+
+Writing in PatternWriter works in either the base writing window, or the Text Element window, which can be accessed with the keyboard input `ctrl + tab`.
+
+In the Text Element window, you are capable of seeing richtext instead of having it be automatically converted to markdown, and capable of using keycodes for quick richtext.
+
+![image](https://github.com/user-attachments/assets/d92e2465-f6a4-4b5e-8eee-b4f39cf3d80d)
+![image](https://github.com/user-attachments/assets/e68c6774-5a4b-472a-9fd1-6f9184f4952e)
+
+### PatternWriter Text Element Window Keycode Reference
+
+| Keycode | Output |
+| `<` | `<>` |
+| `ctrl + s` | `<size=>` |
+| `ctrl + d` | `<align=>` |
+| `ctrl + i` | `<i></i>` |
+| `ctrl + b` | `<b></b>` |
