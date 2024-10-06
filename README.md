@@ -34,6 +34,7 @@ In the Text Element window, you are capable of seeing richtext instead of having
 
 Pressing `Submit` will output the written text to the main window.
 
+![pwtextelementexample3](https://github.com/user-attachments/assets/4d89cea6-f7c8-4d2a-b415-5c6a487c0d55)
 
 ### PatternWriter Text Element Window Keycode Reference
 
