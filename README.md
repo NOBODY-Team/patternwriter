@@ -28,7 +28,8 @@ Writing in PatternWriter works in either the base writing window, or the Text El
 
 In the Text Element window, you are capable of seeing richtext instead of having it be automatically converted to markdown, and capable of using keycodes for quick richtext.
 
-![pwtextelementexample1](https://github.com/user-attachments/assets/479bb546-4bc0-4587-a8e2-98086452a8a0)
+![pwtextelementexample1](https://github.com/user-attachments/assets/479bb546-4bc0-4587-a8e2-98086452a8a0) ![pwtextelementexample2](https://github.com/user-attachments/assets/d17796e7-6b3d-4a2e-9019-d659dd82657a)
+
 
 ### PatternWriter Text Element Window Keycode Reference
 
