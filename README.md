@@ -5,6 +5,14 @@ Ultraminimalistic open-source writing software.
 
 # Functionality
 
+## General Input
+
+| Keycode | Output |
+| `ctrl + tab` | Opens `Text Element Window` |
+| `esc` | Opens `Save Window` |
+| `F1` | Opens `Import Window` |
+| `F2` | Opens `Pattern Window` |
+
 ## Writing
 
 PatternWriter utilizes writing based on richtext markdown, rather than UI input.
