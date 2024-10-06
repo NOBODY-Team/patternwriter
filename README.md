@@ -8,7 +8,7 @@ Ultraminimalistic open-source writing software.
 ## Writing
 PatternWriter utilizes writing based on richtext markdown, rather than UI input.
 
-> [DISCLAIMER!]
+> [DISCLAIMER]
 > PatternWriter only currently supports one singular font, Courier New, although this will change in the future.
 
 ### PatternWriter Richtext Writing Reference
