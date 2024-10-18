@@ -1,6 +1,6 @@
 # [directory](https://nobodyteam.com)
 
-![{E4D893F5-929B-4EB3-AB17-29E26E62C060}](https://github.com/user-attachments/assets/43899034-0058-49ca-b428-98fd535227b1)
+![PatternWriterbanner](https://github.com/user-attachments/assets/b6b40d1b-c186-4169-866b-216764f40c62)
 
 # PatternWriter
 Ultraminimalistic open-source writing software based on richtext and different kinds formatting.
@@ -16,6 +16,8 @@ Ultraminimalistic open-source writing software based on richtext and different k
 | `F2` | Opens `Pattern Window` |
 
 ## Writing
+
+![{2D4656F2-BB0E-492E-8DAF-9A563B795AB9}](https://github.com/user-attachments/assets/d5fa8f73-1cbd-4fc0-9c9e-de3ab5a9d670)
 
 PatternWriter utilizes writing based on richtext markdown, rather than UI input.
 
