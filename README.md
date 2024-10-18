@@ -1,5 +1,7 @@
 # [directory](https://nobodyteam.com)
 
+![{E4D893F5-929B-4EB3-AB17-29E26E62C060}](https://github.com/user-attachments/assets/43899034-0058-49ca-b428-98fd535227b1)
+
 # PatternWriter
 Ultraminimalistic open-source writing software based on richtext and different kinds formatting.
 
