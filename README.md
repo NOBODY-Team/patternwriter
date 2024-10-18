@@ -1,7 +1,7 @@
 # [directory](https://nobodyteam.com)
 
 # PatternWriter
-Ultraminimalistic open-source writing software.
+Ultraminimalistic open-source writing software based on richtext and different kinds formatting.
 
 # Functionality
 
