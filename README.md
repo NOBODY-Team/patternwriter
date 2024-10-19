@@ -11,11 +11,11 @@ Ultraminimalistic open-source writing software based on richtext and formatting.
 
 ## General Input
 
-| Keycode | Output |
-| `ctrl + tab` | Opens `Text Element Window` |
-| `esc` | Opens `Save Window` |
-| `F1` | Opens `Import Window` |
-| `F2` | Opens `Pattern Window` |
+| Keycode | --- | Output |
+| `ctrl + tab` | | Opens `Text Element Window` |
+| `esc` | | Opens `Save Window` |
+| `F1` | | Opens `Import Window` |
+| `F2` | | Opens `Pattern Window` |
 
 ## Writing
 
