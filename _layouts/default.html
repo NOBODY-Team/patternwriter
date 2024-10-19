@@ -36,7 +36,7 @@
         color: black;
         border-collapse: collapse;
         width: 100%;
-        table-layout: fixed; /* Enforce equal column widths */
+        table-layout: auto;
         border: 1px solid white;
       }
 
@@ -45,6 +45,7 @@
         text-align: left;
         border-bottom: 1px solid white;
         word-wrap: break-word;
+        min-width: 150px; /* Table min. width */
       }
 
       th {
