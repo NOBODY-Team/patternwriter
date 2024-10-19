@@ -29,7 +29,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         transition: transform 0.3s ease;
         transform: translateX(0);
-        padding-left: 20px; /* Added padding for better alignment */
+        padding-left: 20px;
       }
 
       .sidebar.hidden {
@@ -42,6 +42,11 @@
         padding: 15px;
         flex-grow: 1;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        transition: margin-left 0.3s ease;
+      }
+
+      .sidebar.hidden ~ .content {
+        margin-left: 0;
       }
 
       .navbar {
@@ -121,7 +126,7 @@
 
       .sidebar a {
         color: white;
-        padding: 5px 0; /* Adjusted padding for sidebar items */
+        padding: 5px 0;
       }
 
       .sidebar a:hover {
@@ -167,6 +172,15 @@
           width: 100%;
         }
       }
+
+      .fade-in {
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      .fade-in.visible {
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
@@ -179,7 +193,7 @@
         <input type="text" id="search" placeholder="Search..." />
       </div>
     </div>
-    <div class="sidebar" id="sidebar">
+    <div class="sidebar hidden" id="sidebar">
       <h2>Contents</h2>
       <ul id="header-links"></ul>
     </div>
@@ -243,48 +257,65 @@
           results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
           setTimeout(removeHighlights, 5000);
         } else {
-          navButtons.forEach(button => button.style.display = 'none');
+          navButtons.forEach(button => button.style.display = 'none';
         }
       });
 
       function removeHighlights() {
         results.forEach(match => match.style.backgroundColor = '');
         if (!searchInput.value) {
-          navButtons.forEach(button => button.style.display = 'none');
+          navButtons.forEach(button => button.style.display = 'none';
           searchInfo.style.display = 'none';
         }
       }
 
       prevResultButton.addEventListener('click', function() {
-        if (results.length > 0) {
-          currentIndex = (currentIndex > 0) ? currentIndex - 1 : results.length - 1;
-          highlightCurrent();
+        if (currentIndex > 0) {
+          results[currentIndex].style.backgroundColor = '';
+          currentIndex--;
+          results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
         }
       });
 
       nextResultButton.addEventListener('click', function() {
-        if (results.length > 0) {
-          currentIndex = (currentIndex + 1) % results.length;
-          highlightCurrent();
+        if (currentIndex < results.length - 1) {
+          results[currentIndex].style.backgroundColor = '';
+          currentIndex++;
+          results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
         }
       });
 
-      function highlightCurrent() {
-        removeHighlights();
-        results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
-        searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
-        results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => {
-          if (searchInput.value) {
-            results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
-          }
-        }, 5000);
-      }
+      const toggleSidebarButton = document.getElementById('toggle-sidebar');
+      const sidebar = document.getElementById('sidebar');
 
-      document.getElementById('toggle-sidebar').addEventListener('click', function() {
-        const sidebar = document.getElementById('sidebar');
+      toggleSidebarButton.addEventListener('click', function() {
         sidebar.classList.toggle('hidden');
       });
+
+      const fadeInElements = document.querySelectorAll('.fade-in');
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      fadeInElements.forEach(element => observer.observe(element));
+
+      const allItems = document.querySelectorAll('.markdown-body > *');
+      allItems.forEach(item => item.classList.add('fade-in'));
     </script>
   </body>
 </html>
