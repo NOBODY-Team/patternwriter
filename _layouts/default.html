@@ -22,7 +22,8 @@
         padding: 15px;
         width: 200px;
         position: fixed;
-        height: 100%;
+        top: 50px;
+        height: calc(100% - 50px);
         overflow-y: auto;
         border-radius: 8px 0 0 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
@@ -77,7 +78,7 @@
 
       h1, h2, h3, h4, h5, h6 {
         color: white;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
       }
 
       .footer {
@@ -114,40 +115,16 @@
           width: 100%;
         }
       }
-
-      .fade-in {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.5s ease, transform 0.5s ease;
-      }
-
-      .fade-in.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .toggle-button {
-        position: fixed;
-        top: 15px;
-        left: 15px;
-        background-color: transparent;
-        color: white;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 10;
-      }
     </style>
   </head>
   <body>
-    <button class="toggle-button" onclick="toggleSidebar()">☰</button>
+    <div class="navbar">
+      <button id="toggle-sidebar">☰</button>
+      <input type="text" id="search" placeholder="Search..." />
+    </div>
     <div class="sidebar" id="sidebar">
-      <button onclick="toggleSidebar()">Close</button>
       <h2>Contents</h2>
       <ul id="header-links"></ul>
-    </div>
-    <div class="navbar">
-      <input type="text" placeholder="Search..." id="search-bar" onkeydown="handleSearch(event)">
     </div>
     <div class="content">
       <div class="container-lg px-3 my-5 markdown-body">
@@ -178,55 +155,29 @@
           link.appendChild(anchor);
           headerLinks.appendChild(link);
         });
-
-        const fadeElements = document.querySelectorAll('.markdown-body > *');
-        const options = {
-          root: null,
-          threshold: 0.1,
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        }, options);
-
-        fadeElements.forEach(element => {
-          element.classList.add('fade-in');
-          observer.observe(element);
-        });
       });
 
-      function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('hidden');
-      }
-
-      function handleSearch(event) {
+      const searchInput = document.getElementById('search');
+      searchInput.addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
-          const query = document.getElementById('search-bar').value.toLowerCase();
-          const contents = document.querySelectorAll('.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6');
-          let found = false;
-
-          contents.forEach(content => {
-            if (content.textContent.toLowerCase().includes(query)) {
-              content.scrollIntoView({ behavior: "smooth" });
-              content.style.backgroundColor = "yellow";
-              setTimeout(() => {
-                content.style.backgroundColor = "";
-              }, 2000);
-              found = true;
+          const searchTerm = searchInput.value;
+          const regex = new RegExp(searchTerm, 'gi');
+          const matches = document.querySelectorAll('.markdown-body *');
+          matches.forEach(match => {
+            if (regex.test(match.textContent)) {
+              match.style.backgroundColor = 'yellow';
+              match.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+              match.style.backgroundColor = '';
             }
           });
-
-          if (!found) {
-            alert('No results found.');
-          }
         }
-      }
+      });
+
+      document.getElementById('toggle-sidebar').addEventListener('click', function() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('hidden');
+      });
     </script>
   </body>
 </html>
