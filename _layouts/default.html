@@ -49,21 +49,24 @@
         right: 0;
         background: rgba(30, 30, 30, 0.8);
         backdrop-filter: blur(10px);
-        padding: 10px;
+        padding: 5px;
         z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
 
       .search-container {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
       }
 
       .navbar input {
         padding: 8px;
         border-radius: 5px;
         border: 1px solid lightgray;
-        margin-left: 10px;
+        margin-left: 5px;
+        min-width: 150px;
       }
 
       .navbar button {
@@ -71,11 +74,21 @@
         border: none;
         color: white;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 20px;
+        padding: 5px;
+        height: 30px;
+        width: 30px;
       }
 
       .nav-button {
         display: none;
+        background-color: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 20px;
+        height: 30px;
+        width: 30px;
       }
 
       a {
@@ -138,12 +151,12 @@
   </head>
   <body>
     <div class="navbar">
+      <button id="toggle-sidebar">☰</button>
       <div class="search-container">
         <button id="prev-result" class="nav-button">↑</button>
         <button id="next-result" class="nav-button">↓</button>
         <input type="text" id="search" placeholder="Search..." />
       </div>
-      <button id="toggle-sidebar">☰</button>
     </div>
     <div class="sidebar" id="sidebar">
       <h2>Contents</h2>
@@ -187,34 +200,34 @@
       let currentIndex = -1;
       const results = [];
 
-      searchInput.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-          const searchTerm = searchInput.value;
-          const regex = new RegExp(searchTerm, 'gi');
-          const matches = document.querySelectorAll('.markdown-body *');
-          results.length = 0;
-          matches.forEach(match => {
-            if (regex.test(match.textContent)) {
-              match.style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
-              results.push(match);
-            } else {
-              match.style.backgroundColor = '';
-            }
-          });
-          currentIndex = results.length ? 0 : -1;
-          if (currentIndex >= 0) {
-            results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            navButtons.forEach(button => button.style.display = 'inline-block');
-            setTimeout(removeHighlights, 3000);
+      searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value;
+        const regex = new RegExp(searchTerm, 'gi');
+        const matches = document.querySelectorAll('.markdown-body *');
+        results.length = 0;
+        matches.forEach(match => {
+          if (regex.test(match.textContent)) {
+            match.style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+            results.push(match);
           } else {
-            navButtons.forEach(button => button.style.display = 'none');
+            match.style.backgroundColor = '';
           }
+        });
+        currentIndex = results.length ? 0 : -1;
+        if (currentIndex >= 0) {
+          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          navButtons.forEach(button => button.style.display = 'inline-block');
+          setTimeout(removeHighlights, 3000);
+        } else {
+          navButtons.forEach(button => button.style.display = 'none');
         }
       });
 
       function removeHighlights() {
         results.forEach(match => match.style.backgroundColor = '');
-        navButtons.forEach(button => button.style.display = 'none');
+        if (!searchInput.value) {
+          navButtons.forEach(button => button.style.display = 'none');
+        }
       }
 
       prevResultButton.addEventListener('click', function() {
