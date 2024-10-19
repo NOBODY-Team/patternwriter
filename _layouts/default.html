@@ -29,7 +29,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         transition: transform 0.3s ease;
         transform: translateX(0);
-        padding-left: 20px;
+        padding-left: 20px; /* Added padding for better alignment */
       }
 
       .sidebar.hidden {
@@ -42,11 +42,6 @@
         padding: 15px;
         flex-grow: 1;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-        transition: margin-left 0.3s ease;
-      }
-
-      .sidebar.hidden ~ .content {
-        margin-left: 0;
       }
 
       .navbar {
@@ -126,7 +121,7 @@
 
       .sidebar a {
         color: white;
-        padding: 5px 0;
+        padding: 5px 0; /* Adjusted padding for sidebar items */
       }
 
       .sidebar a:hover {
@@ -172,17 +167,6 @@
           width: 100%;
         }
       }
-
-      .fade-in {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.5s ease, transform 0.5s ease;
-      }
-
-      .fade-in.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
     </style>
   </head>
   <body>
@@ -195,7 +179,7 @@
         <input type="text" id="search" placeholder="Search..." />
       </div>
     </div>
-    <div class="sidebar hidden" id="sidebar">
+    <div class="sidebar" id="sidebar">
       <h2>Contents</h2>
       <ul id="header-links"></ul>
     </div>
@@ -223,7 +207,7 @@
         headers.forEach(header => {
           const link = document.createElement('li');
           const anchor = document.createElement('a');
-          anchor.href = `#${header.id}`;
+          anchor.href = #${header.id};
           anchor.textContent = header.textContent;
           link.appendChild(anchor);
           headerLinks.appendChild(link);
@@ -252,14 +236,14 @@
           }
         });
         currentIndex = results.length ? 0 : -1;
-        searchInfo.textContent = currentIndex >= 0 ? `${currentIndex + 1}/${results.length}` : '';
+        searchInfo.textContent = currentIndex >= 0 ? ${currentIndex + 1}/${results.length} : '';
         searchInfo.style.display = results.length > 0 ? 'inline' : 'none';
         navButtons.forEach(button => button.style.display = results.length > 0 ? 'inline-block' : 'none');
         if (currentIndex >= 0) {
           results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
           setTimeout(removeHighlights, 5000);
         } else {
-          navButtons.forEach(button => button.style.display = 'none';
+          navButtons.forEach(button => button.style.display = 'none');
         }
       });
 
@@ -267,56 +251,40 @@
         results.forEach(match => match.style.backgroundColor = '');
         if (!searchInput.value) {
           navButtons.forEach(button => button.style.display = 'none');
+          searchInfo.style.display = 'none';
         }
       }
 
       prevResultButton.addEventListener('click', function() {
-        if (currentIndex > 0) {
-          results[currentIndex].style.backgroundColor = '';
-          currentIndex--;
-          results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
-          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-          searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
+        if (results.length > 0) {
+          currentIndex = (currentIndex > 0) ? currentIndex - 1 : results.length - 1;
+          highlightCurrent();
         }
       });
 
       nextResultButton.addEventListener('click', function() {
-        if (currentIndex < results.length - 1) {
-          results[currentIndex].style.backgroundColor = '';
-          currentIndex++;
-          results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
-          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-          searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
+        if (results.length > 0) {
+          currentIndex = (currentIndex + 1) % results.length;
+          highlightCurrent();
         }
       });
 
-      const toggleSidebarButton = document.getElementById('toggle-sidebar');
-      const sidebar = document.getElementById('sidebar');
+      function highlightCurrent() {
+        removeHighlights();
+        results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+        searchInfo.textContent = ${currentIndex + 1}/${results.length};
+        results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          if (searchInput.value) {
+            results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+          }
+        }, 5000);
+      }
 
-      toggleSidebarButton.addEventListener('click', function() {
+      document.getElementById('toggle-sidebar').addEventListener('click', function() {
+        const sidebar = document.getElementById('sidebar');
         sidebar.classList.toggle('hidden');
       });
-
-      const fadeInElements = document.querySelectorAll('.fade-in');
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, observerOptions);
-
-      fadeInElements.forEach(element => observer.observe(element));
-
-      const allItems = document.querySelectorAll('.markdown-body > *');
-      allItems.forEach(item => item.classList.add('fade-in'));
     </script>
   </body>
 </html>
