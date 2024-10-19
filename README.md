@@ -3,7 +3,9 @@
 ![PatternWriterbannerwhite](https://github.com/user-attachments/assets/75775dc5-8499-4bd5-b3c5-b3c4e3120931)
 
 # PatternWriter
-Ultraminimalistic open-source writing software based on richtext and different kinds formatting.
+Ultraminimalistic open-source writing software based on richtext and formatting.
+
+# [Installation](https://nobodyteam.com/patternwriter/install/)
 
 # Functionality
 
