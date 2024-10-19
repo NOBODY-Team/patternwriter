@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: 'en-US' }}">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     {% seo %}
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
     {% include head-custom.html %}
@@ -37,11 +36,13 @@
       }
 
       .content {
-        margin-left: 220px;
+        flex-grow: 1;
         margin-top: 50px;
         padding: 15px;
-        flex-grow: 1;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        margin-left: 220px;
       }
 
       .navbar {
@@ -168,8 +169,8 @@
         }
       }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="navbar">
       <button id="toggle-sidebar">☰</button>
       <div class="search-container">
@@ -243,7 +244,7 @@
           results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
           setTimeout(removeHighlights, 5000);
         } else {
-          navButtons.forEach(button => button.style.display = 'none');
+          navButtons.forEach(button => button.style.display = 'none';
         }
       });
 
@@ -270,21 +271,24 @@
       });
 
       function highlightCurrent() {
-        removeHighlights();
-        results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+        results.forEach((match, index) => {
+          match.style.backgroundColor = (index === currentIndex) ? 'rgba(255, 165, 0, 0.5)' : '';
+        });
         searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
         results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => {
-          if (searchInput.value) {
-            results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
-          }
-        }, 5000);
       }
 
       document.getElementById('toggle-sidebar').addEventListener('click', function() {
         const sidebar = document.getElementById('sidebar');
+        const content = document.querySelector('.content');
         sidebar.classList.toggle('hidden');
+
+        if (sidebar.classList.contains('hidden')) {
+          content.style.marginLeft = '0';
+        } else {
+          content.style.marginLeft = '220px';
+        }
       });
     </script>
-  </body>
+</body>
 </html>
