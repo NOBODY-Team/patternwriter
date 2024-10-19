@@ -41,6 +41,23 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
       }
 
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(30, 30, 30, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 10px;
+        z-index: 10;
+      }
+
+      .navbar input {
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid lightgray;
+      }
+
       a {
         color: lightblue;
         text-decoration: none;
@@ -120,29 +137,6 @@
         cursor: pointer;
         z-index: 10;
       }
-
-      .search-container {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        z-index: 10;
-      }
-
-      .search-container input {
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid lightgray;
-      }
-
-      .sidebar button {
-        background-color: rgba(255, 255, 255, 0.2);
-        color: white;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-bottom: 10px;
-      }
     </style>
   </head>
   <body>
@@ -152,11 +146,11 @@
       <h2>Contents</h2>
       <ul id="header-links"></ul>
     </div>
+    <div class="navbar">
+      <input type="text" placeholder="Search..." id="search-bar" onkeydown="handleSearch(event)">
+    </div>
     <div class="content">
       <div class="container-lg px-3 my-5 markdown-body">
-        <div class="search-container">
-          <input type="text" placeholder="Search..." id="search-bar" onkeydown="handleSearch(event)">
-        </div>
         {% if site.title and site.title != page.title %}
           <h1><a href="{{ '/' | absolute_url }}">{{ site.title }}</a></h1>
         {% endif %}
@@ -213,9 +207,24 @@
 
       function handleSearch(event) {
         if (event.key === 'Enter') {
-          const query = document.getElementById('search-bar').value;
-          const searchURL = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-          window.open(searchURL, '_blank');
+          const query = document.getElementById('search-bar').value.toLowerCase();
+          const contents = document.querySelectorAll('.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6');
+          let found = false;
+
+          contents.forEach(content => {
+            if (content.textContent.toLowerCase().includes(query)) {
+              content.scrollIntoView({ behavior: "smooth" });
+              content.style.backgroundColor = "yellow";
+              setTimeout(() => {
+                content.style.backgroundColor = "";
+              }, 2000);
+              found = true;
+            }
+          });
+
+          if (!found) {
+            alert('No results found.');
+          }
         }
       }
     </script>
