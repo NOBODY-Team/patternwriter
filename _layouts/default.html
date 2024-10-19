@@ -126,6 +126,7 @@
         position: fixed;
         top: 15px;
         right: 15px;
+        z-index: 10;
       }
 
       .search-container input {
@@ -133,18 +134,29 @@
         border-radius: 5px;
         border: 1px solid lightgray;
       }
+
+      .sidebar button {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
     </style>
   </head>
   <body>
     <button class="toggle-button" onclick="toggleSidebar()">☰</button>
     <div class="sidebar" id="sidebar">
+      <button onclick="toggleSidebar()">Close</button>
       <h2>Contents</h2>
       <ul id="header-links"></ul>
     </div>
     <div class="content">
       <div class="container-lg px-3 my-5 markdown-body">
         <div class="search-container">
-          <input type="text" placeholder="Search..." id="search-bar">
+          <input type="text" placeholder="Search..." id="search-bar" onkeydown="handleSearch(event)">
         </div>
         {% if site.title and site.title != page.title %}
           <h1><a href="{{ '/' | absolute_url }}">{{ site.title }}</a></h1>
@@ -198,6 +210,14 @@
       function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         sidebar.classList.toggle('hidden');
+      }
+
+      function handleSearch(event) {
+        if (event.key === 'Enter') {
+          const query = document.getElementById('search-bar').value;
+          const searchURL = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+          window.open(searchURL, '_blank');
+        }
       }
     </script>
   </body>
