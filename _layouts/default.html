@@ -5,9 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% seo %}
+    {% seo %}
     <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
     {% include head-custom.html %}
+
+    <style>
+      body {
+        background-color: black;
+        color: white;
+      }
+      
+      a {
+        color: lightblue;
+      }
+      
+      a:hover {
+        color: cyan;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: white;
+      }
+
+      .footer {
+        color: gray;
+      }
+
+    </style>
   </head>
   <body>
     <div class="container-lg px-3 my-5 markdown-body">
@@ -19,7 +43,7 @@
 
       {% if site.github.private != true and site.github.license %}
       <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
-        PatternWriter is developed by <a href="https://nobodyteam.com">NOBODY Team</a>
+        PatternWriter is developed by <a href="https://nobodyteam.com">NOBODY Team</a>.
       </div>
       {% endif %}
     </div>
