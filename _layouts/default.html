@@ -63,7 +63,7 @@
         padding: 8px;
         border-radius: 5px;
         border: 1px solid lightgray;
-        margin-right: 10px;
+        margin-left: 10px;
       }
 
       .navbar button {
@@ -139,9 +139,9 @@
   <body>
     <div class="navbar">
       <div class="search-container">
-        <input type="text" id="search" placeholder="Search..." />
         <button id="prev-result" class="nav-button">↑</button>
         <button id="next-result" class="nav-button">↓</button>
+        <input type="text" id="search" placeholder="Search..." />
       </div>
       <button id="toggle-sidebar">☰</button>
     </div>
@@ -205,11 +205,17 @@
           if (currentIndex >= 0) {
             results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
             navButtons.forEach(button => button.style.display = 'inline-block');
+            setTimeout(removeHighlights, 3000);
           } else {
             navButtons.forEach(button => button.style.display = 'none');
           }
         }
       });
+
+      function removeHighlights() {
+        results.forEach(match => match.style.backgroundColor = '');
+        navButtons.forEach(button => button.style.display = 'none');
+      }
 
       prevResultButton.addEventListener('click', function() {
         if (results.length > 0) {
