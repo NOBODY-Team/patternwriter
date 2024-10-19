@@ -10,48 +10,50 @@
     {% include head-custom.html %}
 
     <style>
-      body {
-        background-color: black;
-        color: white;
-      }
-      
-      a {
-        color: lightblue;
-      }
-      
-      a:hover {
-        color: cyan;
-      }
+  body {
+    background-color: black;
+    color: white;
+  }
+  
+  a {
+    color: lightblue;
+  }
+  
+  a:hover {
+    color: cyan;
+  }
 
-      h1, h2, h3, h4, h5, h6 {
-        color: white;
-      }
+  h1, h2, h3, h4, h5, h6 {
+    color: white;
+  }
 
-      .footer {
-        color: gray;
-      }
+  .footer {
+    color: gray;
+  }
 
-      table {
-        background-color: gray;
-        color: black;
-        border-collapse: collapse;
-        width: auto;
-        border: 1px solid white;
-      }
+  table {
+    background-color: gray;
+    color: black;
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed; /* This ensures equal distribution of column space */
+    border: 1px solid white;
+  }
 
-      th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid white;
-        word-wrap: break-word;
-      }
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid white;
+    word-wrap: break-word;
+    width: 50%; /* Distribute columns equally */
+  }
 
-      th {
-        background-color: darkgray;
-        color: black;
-      }
+  th {
+    background-color: darkgray;
+    color: black;
+  }
+</style>
 
-    </style>
   </head>
   <body>
     <div class="container-lg px-3 my-5 markdown-body">
