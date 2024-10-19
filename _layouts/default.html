@@ -37,6 +37,7 @@
 
       .content {
         margin-left: 220px;
+        margin-top: 50px;
         padding: 15px;
         flex-grow: 1;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
@@ -217,7 +218,7 @@
         if (currentIndex >= 0) {
           results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
           navButtons.forEach(button => button.style.display = 'inline-block');
-          setTimeout(removeHighlights, 3000);
+          setTimeout(removeHighlights, 5000);
         } else {
           navButtons.forEach(button => button.style.display = 'none');
         }
@@ -249,7 +250,7 @@
           match.style.backgroundColor = index === currentIndex ? 'rgba(255, 255, 0, 0.5)' : '';
         });
         results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => removeHighlight(results[currentIndex]), 3000);
+        setTimeout(() => removeHighlight(results[currentIndex]), 5000);
       }
 
       function removeHighlight(match) {
