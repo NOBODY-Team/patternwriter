@@ -175,11 +175,13 @@
 
       .fade-in {
         opacity: 0;
-        transition: opacity 0.5s ease;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
       }
 
       .fade-in.visible {
         opacity: 1;
+        transform: translateY(0);
       }
     </style>
   </head>
@@ -264,8 +266,7 @@
       function removeHighlights() {
         results.forEach(match => match.style.backgroundColor = '');
         if (!searchInput.value) {
-          navButtons.forEach(button => button.style.display = 'none';
-          searchInfo.style.display = 'none';
+          navButtons.forEach(button => button.style.display = 'none');
         }
       }
 
