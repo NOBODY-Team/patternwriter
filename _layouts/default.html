@@ -233,16 +233,28 @@
       prevResultButton.addEventListener('click', function() {
         if (results.length > 0) {
           currentIndex = (currentIndex > 0) ? currentIndex - 1 : results.length - 1;
-          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          highlightCurrent();
         }
       });
 
       nextResultButton.addEventListener('click', function() {
         if (results.length > 0) {
           currentIndex = (currentIndex < results.length - 1) ? currentIndex + 1 : 0;
-          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          highlightCurrent();
         }
       });
+
+      function highlightCurrent() {
+        results.forEach((match, index) => {
+          match.style.backgroundColor = index === currentIndex ? 'rgba(255, 255, 0, 0.5)' : '';
+        });
+        results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => removeHighlight(results[currentIndex]), 3000);
+      }
+
+      function removeHighlight(match) {
+        match.style.backgroundColor = '';
+      }
 
       document.getElementById('toggle-sidebar').addEventListener('click', function() {
         const sidebar = document.getElementById('sidebar');
