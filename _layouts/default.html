@@ -122,6 +122,63 @@
       .reveal {
         animation: reveal 0.5s forwards;
       }
+
+      a {
+        color: lightblue;
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: cyan;
+      }
+
+      .sidebar a {
+        color: white;
+      }
+
+      .sidebar a:hover {
+        color: cyan;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+      }
+
+      .footer {
+        color: gray;
+      }
+
+      table {
+        background-color: gray;
+        color: black;
+        border-collapse: collapse;
+        width: auto;
+        table-layout: auto;
+        border: 1px solid white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      }
+
+      th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid white;
+        word-wrap: break-word;
+        width: auto;
+      }
+
+      th {
+        background-color: darkgray;
+        color: black;
+      }
+
+      @media (max-width: 600px) {
+        th, td {
+          width: 100%;
+        }
+      }
     </style>
   </head>
   <body>
@@ -129,6 +186,7 @@
       <button id="toggle-sidebar">☰</button>
       <div class="search-container">
         <button class="nav-button" id="prev-button">↑</button>
+        <span id="search-info" style="color: white;"></span>
         <button class="nav-button" id="next-button">↓</button>
         <input type="text" id="search-input" placeholder="Search...">
       </div>
@@ -158,6 +216,7 @@
       const searchInput = document.getElementById('search-input');
       const prevButton = document.getElementById('prev-button');
       const nextButton = document.getElementById('next-button');
+      const searchInfo = document.getElementById('search-info');
       const results = [];
       let currentIndex = -1;
 
@@ -177,10 +236,12 @@
             highlightCurrent();
             prevButton.classList.add('visible');
             nextButton.classList.add('visible');
+            searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
           }
         } else {
           prevButton.classList.remove('visible');
           nextButton.classList.remove('visible');
+          searchInfo.textContent = '';
         }
       });
 
@@ -207,6 +268,7 @@
             results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
           }
         }, 5000);
+        searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
       }
 
       function removeHighlights() {
