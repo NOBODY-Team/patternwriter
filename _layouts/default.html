@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: 'en-US' }}">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -168,8 +168,8 @@
         }
       }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="navbar">
       <button id="toggle-sidebar">☰</button>
       <div class="search-container">
@@ -243,14 +243,14 @@
           results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
           setTimeout(removeHighlights, 5000);
         } else {
-          navButtons.forEach(button => button.style.display = 'none';
+          navButtons.forEach(button => button.style.display = 'none');
         }
       });
 
       function removeHighlights() {
         results.forEach(match => match.style.backgroundColor = '');
         if (!searchInput.value) {
-          navButtons.forEach(button => button.style.display = 'none';
+          navButtons.forEach(button => button.style.display = 'none');
           searchInfo.style.display = 'none';
         }
       }
@@ -264,25 +264,27 @@
 
       nextResultButton.addEventListener('click', function() {
         if (results.length > 0) {
-          currentIndex = (currentIndex < results.length - 1) ? currentIndex + 1 : 0;
+          currentIndex = (currentIndex + 1) % results.length;
           highlightCurrent();
         }
       });
 
       function highlightCurrent() {
-        results.forEach((match, index) => {
-          match.style.backgroundColor = (index === currentIndex) ? 'rgba(255, 0, 0, 0.5)' : '';
-        });
-        results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        removeHighlights();
+        results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
         searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
+        results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          if (searchInput.value) {
+            results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+          }
+        }, 5000);
       }
 
-      const toggleSidebarButton = document.getElementById('toggle-sidebar');
-      const sidebar = document.getElementById('sidebar');
-
-      toggleSidebarButton.addEventListener('click', function() {
+      document.getElementById('toggle-sidebar').addEventListener('click', function() {
+        const sidebar = document.getElementById('sidebar');
         sidebar.classList.toggle('hidden');
       });
     </script>
-</body>
+  </body>
 </html>
