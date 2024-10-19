@@ -11,12 +11,29 @@
 
     <style>
       body {
+        display: flex;
         background-color: black;
         color: white;
       }
 
+      .sidebar {
+        background-color: darkgray;
+        padding: 15px;
+        width: 200px;
+        position: fixed;
+        height: 100%;
+        overflow-y: auto;
+      }
+
+      .content {
+        margin-left: 220px;
+        padding: 15px;
+        flex-grow: 1;
+      }
+
       a {
         color: lightblue;
+        text-decoration: none;
       }
 
       a:hover {
@@ -61,20 +78,40 @@
     </style>
   </head>
   <body>
-    <div class="container-lg px-3 my-5 markdown-body">
-      {% if site.title and site.title != page.title %}
-        <h1><a href="{{ '/' | absolute_url }}">{{ site.title }}</a></h1>
-      {% endif %}
+    <div class="sidebar">
+      <h2>Contents</h2>
+      <ul id="header-links"></ul>
+    </div>
+    <div class="content">
+      <div class="container-lg px-3 my-5 markdown-body">
+        {% if site.title and site.title != page.title %}
+          <h1><a href="{{ '/' | absolute_url }}">{{ site.title }}</a></h1>
+        {% endif %}
 
-      {{ content }}
+        {{ content }}
 
-      {% if site.github.private != true and site.github.license %}
-        <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
-          PatternWriter is developed by <a href="https://nobodyteam.com">NOBODY Team</a>.
-        </div>
-      {% endif %}
+        {% if site.github.private != true and site.github.license %}
+          <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+            PatternWriter is developed by <a href="https://nobodyteam.com">NOBODY Team</a>.
+          </div>
+        {% endif %}
+      </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
-    <script>anchors.add();</script>
+    <script>
+      anchors.add();
+      document.addEventListener('DOMContentLoaded', function() {
+        const headers = document.querySelectorAll('.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6');
+        const headerLinks = document.getElementById('header-links');
+        headers.forEach(header => {
+          const link = document.createElement('li');
+          const anchor = document.createElement('a');
+          anchor.href = `#${header.id}`;
+          anchor.textContent = header.textContent;
+          link.appendChild(anchor);
+          headerLinks.appendChild(link);
+        });
+      });
+    </script>
   </body>
 </html>
