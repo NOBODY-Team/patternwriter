@@ -264,7 +264,7 @@
 
       nextResultButton.addEventListener('click', function() {
         if (results.length > 0) {
-          currentIndex = (currentIndex + 1) % results.length;
+          currentIndex = (currentIndex < results.length - 1) ? currentIndex + 1 : 0;
           highlightCurrent();
         }
       });
