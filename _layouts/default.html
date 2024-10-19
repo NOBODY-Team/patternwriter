@@ -193,12 +193,7 @@
     </div>
     <div class="sidebar" id="sidebar">
       <h2>Contents</h2>
-      <ul id="header-links">
-        <li><a href="#section1">Section 1</a></li>
-        <li><a href="#section2">Section 2</a></li>
-        <li><a href="#section3">Section 3</a></li>
-        <li><a href="#section4">Section 4</a></li>
-      </ul>
+      <ul id="header-links"></ul>
     </div>
     <div class="content" id="content">
       <div class="container-lg px-3 my-5 markdown-body">
@@ -225,11 +220,20 @@
       const results = [];
       let currentIndex = -1;
 
+      const items = document.querySelectorAll('.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6');
+      items.forEach(item => {
+        const link = document.createElement('li');
+        const anchor = document.createElement('a');
+        anchor.href = `#${item.id}`;
+        anchor.textContent = item.textContent;
+        link.appendChild(anchor);
+        document.getElementById('header-links').appendChild(link);
+      });
+
       searchInput.addEventListener('input', function() {
         removeHighlights();
         const query = searchInput.value.toLowerCase();
         if (query) {
-          const items = document.querySelectorAll('.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6');
           items.forEach(item => {
             if (item.textContent.toLowerCase().includes(query)) {
               results.push(item);
@@ -294,6 +298,7 @@
 
       window.addEventListener('load', () => {
         sidebar.classList.remove('visible');
+        sidebar.style.paddingLeft = '0';
       });
     </script>
   </body>
