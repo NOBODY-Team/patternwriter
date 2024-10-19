@@ -56,6 +56,7 @@
       .search-container {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
       }
 
       .navbar input {
@@ -71,6 +72,10 @@
         color: white;
         cursor: pointer;
         font-size: 16px;
+      }
+
+      .nav-button {
+        display: none;
       }
 
       a {
@@ -135,8 +140,8 @@
     <div class="navbar">
       <div class="search-container">
         <input type="text" id="search" placeholder="Search..." />
-        <button id="prev-result">↑</button>
-        <button id="next-result">↓</button>
+        <button id="prev-result" class="nav-button">↑</button>
+        <button id="next-result" class="nav-button">↓</button>
       </div>
       <button id="toggle-sidebar">☰</button>
     </div>
@@ -178,6 +183,7 @@
       const searchInput = document.getElementById('search');
       const prevResultButton = document.getElementById('prev-result');
       const nextResultButton = document.getElementById('next-result');
+      const navButtons = document.querySelectorAll('.nav-button');
       let currentIndex = -1;
       const results = [];
 
@@ -196,7 +202,12 @@
             }
           });
           currentIndex = results.length ? 0 : -1;
-          if (currentIndex >= 0) results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (currentIndex >= 0) {
+            results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            navButtons.forEach(button => button.style.display = 'inline-block');
+          } else {
+            navButtons.forEach(button => button.style.display = 'none');
+          }
         }
       });
 
