@@ -28,12 +28,12 @@
         border-radius: 8px 0 0 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         transition: transform 0.3s ease;
-        transform: translateX(0);
+        transform: translateX(-100%);
         padding-left: 20px;
       }
 
-      .sidebar.hidden {
-        transform: translateX(-100%);
+      .sidebar.visible {
+        transform: translateX(0);
       }
 
       .content {
@@ -193,7 +193,12 @@
     </div>
     <div class="sidebar" id="sidebar">
       <h2>Contents</h2>
-      <ul id="header-links"></ul>
+      <ul id="header-links">
+        <li><a href="#section1">Section 1</a></li>
+        <li><a href="#section2">Section 2</a></li>
+        <li><a href="#section3">Section 3</a></li>
+        <li><a href="#section4">Section 4</a></li>
+      </ul>
     </div>
     <div class="content" id="content">
       <div class="container-lg px-3 my-5 markdown-body">
@@ -272,15 +277,23 @@
       }
 
       function removeHighlights() {
-        results.forEach(item => item.style.backgroundColor = 'transparent');
+        results.forEach(item => {
+          item.style.backgroundColor = '';
+        });
         results.length = 0;
       }
 
-      document.getElementById('toggle-sidebar').addEventListener('click', function() {
-        const sidebar = document.getElementById('sidebar');
-        const content = document.getElementById('content');
-        sidebar.classList.toggle('hidden');
+      const sidebar = document.getElementById('sidebar');
+      const toggleButton = document.getElementById('toggle-sidebar');
+      const content = document.getElementById('content');
+
+      toggleButton.addEventListener('click', function() {
+        sidebar.classList.toggle('visible');
         content.classList.toggle('shifted');
+      });
+
+      window.addEventListener('load', () => {
+        sidebar.classList.remove('visible');
       });
     </script>
   </body>
