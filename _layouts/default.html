@@ -31,12 +31,12 @@
         color: gray;
       }
 
-      /* Custom styles for tables */
       table {
         background-color: gray;
         color: black;
         border-collapse: collapse;
         width: 100%;
+        table-layout: auto;
         border: 1px solid white;
       }
 
@@ -44,12 +44,18 @@
         padding: 8px;
         text-align: left;
         border-bottom: 1px solid white;
+        word-wrap: break-word;
       }
 
       th {
         background-color: darkgray;
         color: black;
       }
+
+      table, th, td {
+        width: 100%;
+      }
+
     </style>
   </head>
   <body>
