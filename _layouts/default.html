@@ -14,6 +14,7 @@
         display: flex;
         background-color: rgb(23, 23, 23);
         color: white;
+        overflow-x: hidden;
       }
 
       .sidebar {
@@ -53,7 +54,7 @@
 
       h1, h2, h3, h4, h5, h6 {
         color: white;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
       }
 
       .footer {
@@ -90,6 +91,17 @@
           width: 100%;
         }
       }
+
+      .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
     </style>
   </head>
   <body>
@@ -125,6 +137,26 @@
           anchor.textContent = header.textContent;
           link.appendChild(anchor);
           headerLinks.appendChild(link);
+        });
+
+        const fadeElements = document.querySelectorAll('.markdown-body > *');
+        const options = {
+          root: null,
+          threshold: 0.1,
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, options);
+
+        fadeElements.forEach(element => {
+          element.classList.add('fade-in');
+          observer.observe(element);
         });
       });
     </script>
