@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     {% seo %}
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
     {% include head-custom.html %}
-
     <style>
       body {
         background-color: rgb(23, 23, 23);
@@ -16,34 +14,17 @@
         overflow-x: hidden;
         display: flex;
         justify-content: center;
-        padding: 50px 0;
       }
 
       .content {
-        background-color: rgb(38, 38, 38);
+        background-color: #333;
         color: white;
         padding: 20px;
         max-width: 900px;
-        margin-top: 50px;
-        width: 100%;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        margin: 50px;
         border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), inset 1px 1px 6px rgba(255, 255, 255, 0.1);
         text-align: center;
-        position: relative;
-      }
-
-      .content:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: 10px;
-        border: 3px solid rgba(255, 255, 255, 0.1);
-        box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.2);
-        z-index: -1;
       }
 
       .navbar {
@@ -52,33 +33,31 @@
         left: 0;
         right: 0;
         background: rgba(30, 30, 30, 0.8);
-        backdrop-filter: blur(10px);
-        padding: 5px;
+        padding: 10px;
         z-index: 10;
         display: flex;
         justify-content: flex-end;
-        align-items: center;
       }
 
       .search-container {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-        margin-right: 20px;
       }
 
       .navbar input {
         padding: 8px;
         border-radius: 5px;
         border: 1px solid lightgray;
-        margin-left: 5px;
-        min-width: 200px;
         background-color: rgb(38, 38, 38);
         color: white;
+        margin-left: 5px;
+        min-width: 150px;
       }
 
-      .navbar button {
+      .search-info {
         display: none;
+        color: white;
+        margin-left: 5px;
       }
 
       a {
@@ -95,50 +74,58 @@
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
       }
 
-      .footer {
-        color: gray;
-      }
-
-      table {
-        background-color: gray;
+      pre, code {
+        background-color: lightgray;
         color: black;
-        border-collapse: collapse;
-        width: auto;
-        table-layout: auto;
-        border: 1px solid white;
+        padding: 10px;
         border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.1);
       }
 
-      th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid white;
-        word-wrap: break-word;
-        width: auto;
+      .alert {
+        background-color: #444;
+        color: white;
+        padding: 10px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 5px solid #ffcc00;
+      }
+
+      .hidden {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      .revealed {
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      table, th, td {
+        border: 1px solid #777;
+        background-color: white;
+        color: black;
+        padding: 10px;
       }
 
       th {
-        background-color: darkgray;
-        color: black;
+        background-color: #333;
+        color: white;
       }
 
       @media (max-width: 600px) {
         th, td {
           width: 100%;
         }
-      }
 
-      .reveal {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: all 0.6s ease;
-      }
+        .content {
+          margin: 20px;
+          padding: 15px;
+        }
 
-      .reveal.active {
-        opacity: 1;
-        transform: translateY(0);
+        .navbar {
+          padding: 5px;
+        }
       }
     </style>
   </head>
@@ -148,15 +135,12 @@
         <input type="text" id="search" placeholder="Search..." />
       </div>
     </div>
-
     <div class="content">
       <div class="container-lg px-3 my-5 markdown-body">
         {% if site.title and site.title != page.title %}
           <h1><a href="{{ '/' | absolute_url }}">{{ site.title }}</a></h1>
         {% endif %}
-
         {{ content }}
-
         {% if site.github.private != true and site.github.license %}
           <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
             PatternWriter is developed by <a href="https://nobodyteam.com">NOBODY Team</a>.
@@ -164,46 +148,50 @@
         {% endif %}
       </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
     <script>
       anchors.add();
+      document.addEventListener('DOMContentLoaded', function() {
+        const elementsToReveal = document.querySelectorAll('.markdown-body *');
+        elementsToReveal.forEach(element => {
+          element.classList.add('hidden');
+        });
 
-      const reveals = document.querySelectorAll('.reveal');
+        let observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
 
-      window.addEventListener('scroll', function () {
-        for (let i = 0; i < reveals.length; i++) {
-          const windowHeight = window.innerHeight;
-          const elementTop = reveals[i].getBoundingClientRect().top;
-          const elementVisible = 100;
-
-          if (elementTop < windowHeight - elementVisible) {
-            reveals[i].classList.add('active');
-          } else {
-            reveals[i].classList.remove('active');
-          }
-        }
+        elementsToReveal.forEach(element => {
+          observer.observe(element);
+        });
       });
 
       const searchInput = document.getElementById('search');
       const results = [];
+      let currentIndex = -1;
 
-      searchInput.addEventListener('input', function () {
+      searchInput.addEventListener('input', function() {
         const searchTerm = searchInput.value.toLowerCase();
-        const content = document.querySelector('.markdown-body');
-        const regex = new RegExp(searchTerm, 'gi');
-        const matches = content.querySelectorAll('*');
-        
+        const matches = document.querySelectorAll('.markdown-body *');
         results.length = 0;
 
         matches.forEach(match => {
-          if (regex.test(match.textContent)) {
+          match.style.backgroundColor = '';
+          if (match.textContent.toLowerCase().includes(searchTerm) && searchTerm.trim() !== '') {
             match.style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
             results.push(match);
-          } else {
-            match.style.backgroundColor = '';
           }
         });
+
+        currentIndex = results.length ? 0 : -1;
+        if (currentIndex >= 0) {
+          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       });
     </script>
   </body>
