@@ -12,17 +12,16 @@
     <style>
       body {
         display: flex;
-        justify-content: center;
         background-color: rgb(23, 23, 23);
         color: white;
         overflow-x: hidden;
       }
 
       .content {
+        margin-left: 0;
         margin-top: 50px;
         padding: 15px;
-        max-width: 800px;
-        width: 100%;
+        flex-grow: 1;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
       }
 
@@ -37,7 +36,44 @@
         z-index: 10;
         display: flex;
         align-items: center;
+        justify-content: space-between;
+      }
+
+      .search-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .navbar input {
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid lightgray;
+        margin-left: 5px;
+        min-width: 150px;
+        background-color: rgb(38, 38, 38);
+        color: white;
+      }
+
+      .nav-button {
+        display: none;
+        background-color: rgba(50, 50, 50, 0.7);
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 20px;
+        height: 30px;
+        width: 30px;
+        border-radius: 5px;
+        margin: 0 5px;
+        display: flex;
+        align-items: center;
         justify-content: center;
+      }
+
+      .search-info {
+        display: none;
+        color: white;
+        margin-left: 5px;
       }
 
       a {
@@ -92,11 +128,14 @@
   </head>
   <body>
     <div class="navbar">
-      <form action="{{ '/search' | relative_url }}" method="get">
-        <input type="text" name="query" id="search-input" placeholder="Search...">
-        <button type="submit">Search</button>
-      </form>
+      <div class="search-container">
+        <button id="prev-result" class="nav-button">↑</button>
+        <span id="search-info" class="search-info"></span>
+        <button id="next-result" class="nav-button">↓</button>
+        <input type="text" id="search" placeholder="Search..." />
+      </div>
     </div>
+
     <div class="content">
       <div class="container-lg px-3 my-5 markdown-body">
         {% if site.title and site.title != page.title %}
@@ -115,6 +154,73 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
     <script>
       anchors.add();
+
+      const searchInput = document.getElementById('search');
+      const prevResultButton = document.getElementById('prev-result');
+      const nextResultButton = document.getElementById('next-result');
+      const searchInfo = document.getElementById('search-info');
+      const navButtons = document.querySelectorAll('.nav-button');
+      let currentIndex = -1;
+      const results = [];
+
+      searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value;
+        const regex = new RegExp(searchTerm, 'gi');
+        const matches = document.querySelectorAll('.markdown-body *');
+        results.length = 0;
+        matches.forEach(match => {
+          if (regex.test(match.textContent)) {
+            match.style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+            results.push(match);
+          } else {
+            match.style.backgroundColor = '';
+          }
+        });
+        currentIndex = results.length ? 0 : -1;
+        searchInfo.textContent = currentIndex >= 0 ? `${currentIndex + 1}/${results.length}` : '';
+        searchInfo.style.display = results.length > 0 ? 'inline' : 'none';
+        navButtons.forEach(button => button.style.display = results.length > 0 ? 'inline-block' : 'none');
+        if (currentIndex >= 0) {
+          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(removeHighlights, 5000);
+        } else {
+          navButtons.forEach(button => button.style.display = 'none');
+        }
+      });
+
+      function removeHighlights() {
+        results.forEach(match => match.style.backgroundColor = '');
+        if (!searchInput.value) {
+          navButtons.forEach(button => button.style.display = 'none');
+          searchInfo.style.display = 'none';
+        }
+      }
+
+      prevResultButton.addEventListener('click', function() {
+        if (results.length > 0) {
+          currentIndex = (currentIndex > 0) ? currentIndex - 1 : results.length - 1;
+          highlightCurrent();
+        }
+      });
+
+      nextResultButton.addEventListener('click', function() {
+        if (results.length > 0) {
+          currentIndex = (currentIndex + 1) % results.length;
+          highlightCurrent();
+        }
+      });
+
+      function highlightCurrent() {
+        removeHighlights();
+        results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+        searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
+        results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          if (searchInput.value) {
+            results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
+          }
+        }, 5000);
+      }
     </script>
   </body>
 </html>
