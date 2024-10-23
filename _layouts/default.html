@@ -12,35 +12,17 @@
     <style>
       body {
         display: flex;
+        justify-content: center;
         background-color: rgb(23, 23, 23);
         color: white;
         overflow-x: hidden;
       }
 
-      .sidebar {
-        background-color: rgb(26, 26, 26);
-        padding: 15px;
-        width: 200px;
-        position: fixed;
-        top: 50px;
-        height: calc(100% - 50px);
-        overflow-y: auto;
-        border-radius: 8px 0 0 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-        transition: transform 0.3s ease;
-        transform: translateX(0);
-        padding-left: 20px;
-      }
-
-      .sidebar.hidden {
-        transform: translateX(-100%);
-      }
-
       .content {
-        margin-left: 220px;
         margin-top: 50px;
         padding: 15px;
-        flex-grow: 1;
+        max-width: 800px;
+        width: 100%;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
       }
 
@@ -88,43 +70,12 @@
         color: white;
       }
 
-      .nav-button {
-        display: none;
-        background-color: rgba(50, 50, 50, 0.7);
-        border: none;
-        color: white;
-        cursor: pointer;
-        font-size: 20px;
-        height: 30px;
-        width: 30px;
-        border-radius: 5px;
-        margin: 0 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .search-info {
-        display: none;
-        color: white;
-        margin-left: 5px;
-      }
-
       a {
         color: lightblue;
         text-decoration: none;
       }
 
       a:hover {
-        color: cyan;
-      }
-
-      .sidebar a {
-        color: white;
-        padding: 5px 0;
-      }
-
-      .sidebar a:hover {
         color: cyan;
       }
 
@@ -173,15 +124,8 @@
     <div class="navbar">
       <button id="toggle-sidebar">☰</button>
       <div class="search-container">
-        <button id="prev-result" class="nav-button">↑</button>
-        <span id="search-info" class="search-info"></span>
-        <button id="next-result" class="nav-button">↓</button>
         <input type="text" id="search" placeholder="Search..." />
       </div>
-    </div>
-    <div class="sidebar" id="sidebar">
-      <h2>Contents</h2>
-      <ul id="header-links"></ul>
     </div>
     <div class="content">
       <div class="container-lg px-3 my-5 markdown-body">
@@ -201,90 +145,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
     <script>
       anchors.add();
-      document.addEventListener('DOMContentLoaded', function() {
-        const headers = document.querySelectorAll('.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6');
-        const headerLinks = document.getElementById('header-links');
-        headers.forEach(header => {
-          const link = document.createElement('li');
-          const anchor = document.createElement('a');
-          anchor.href = `#${header.id}`;
-          anchor.textContent = header.textContent;
-          link.appendChild(anchor);
-          headerLinks.appendChild(link);
-        });
-      });
-
-      const searchInput = document.getElementById('search');
-      const prevResultButton = document.getElementById('prev-result');
-      const nextResultButton = document.getElementById('next-result');
-      const searchInfo = document.getElementById('search-info');
-      const navButtons = document.querySelectorAll('.nav-button');
-      let currentIndex = -1;
-      const results = [];
-
-      searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value;
-        const regex = new RegExp(searchTerm, 'gi');
-        const matches = document.querySelectorAll('.markdown-body *');
-        results.length = 0;
-        matches.forEach(match => {
-          if (regex.test(match.textContent)) {
-            match.style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
-            results.push(match);
-          } else {
-            match.style.backgroundColor = '';
-          }
-        });
-        currentIndex = results.length ? 0 : -1;
-        searchInfo.textContent = currentIndex >= 0 ? `${currentIndex + 1}/${results.length}` : '';
-        searchInfo.style.display = results.length > 0 ? 'inline' : 'none';
-        navButtons.forEach(button => button.style.display = results.length > 0 ? 'inline-block' : 'none');
-        if (currentIndex >= 0) {
-          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-          setTimeout(removeHighlights, 5000);
-        } else {
-          navButtons.forEach(button => button.style.display = 'none');
-        }
-      });
-
-      function removeHighlights() {
-        results.forEach(match => match.style.backgroundColor = '');
-        if (!searchInput.value) {
-          navButtons.forEach(button => button.style.display = 'none');
-          searchInfo.style.display = 'none';
-        }
-      }
-
-      prevResultButton.addEventListener('click', function() {
-        if (results.length > 0) {
-          currentIndex = (currentIndex > 0) ? currentIndex - 1 : results.length - 1;
-          highlightCurrent();
-        }
-      });
-
-      nextResultButton.addEventListener('click', function() {
-        if (results.length > 0) {
-          currentIndex = (currentIndex + 1) % results.length;
-          highlightCurrent();
-        }
-      });
-
-      function highlightCurrent() {
-        removeHighlights();
-        results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
-        searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
-        results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => {
-          if (searchInput.value) {
-            results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
-          }
-        }, 5000);
-      }
-
-      document.getElementById('toggle-sidebar').addEventListener('click', function() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('hidden');
-      });
     </script>
   </body>
 </html>
