@@ -11,18 +11,39 @@
 
     <style>
       body {
-        display: flex;
         background-color: rgb(23, 23, 23);
         color: white;
         overflow-x: hidden;
+        display: flex;
+        justify-content: center;
+        padding: 50px 0;
       }
 
       .content {
-        margin-left: 0;
+        background-color: rgb(38, 38, 38);
+        color: white;
+        padding: 20px;
+        max-width: 900px;
         margin-top: 50px;
-        padding: 15px;
-        flex-grow: 1;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+        position: relative;
+      }
+
+      .content:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 10px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.2);
+        z-index: -1;
       }
 
       .navbar {
@@ -35,13 +56,15 @@
         padding: 5px;
         z-index: 10;
         display: flex;
+        justify-content: flex-end;
         align-items: center;
-        justify-content: space-between;
       }
 
       .search-container {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
+        margin-right: 20px;
       }
 
       .navbar input {
@@ -49,31 +72,13 @@
         border-radius: 5px;
         border: 1px solid lightgray;
         margin-left: 5px;
-        min-width: 150px;
+        min-width: 200px;
         background-color: rgb(38, 38, 38);
         color: white;
       }
 
-      .nav-button {
+      .navbar button {
         display: none;
-        background-color: rgba(50, 50, 50, 0.7);
-        border: none;
-        color: white;
-        cursor: pointer;
-        font-size: 20px;
-        height: 30px;
-        width: 30px;
-        border-radius: 5px;
-        margin: 0 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .search-info {
-        display: none;
-        color: white;
-        margin-left: 5px;
       }
 
       a {
@@ -124,14 +129,22 @@
           width: 100%;
         }
       }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease;
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
     </style>
   </head>
   <body>
     <div class="navbar">
       <div class="search-container">
-        <button id="prev-result" class="nav-button">↑</button>
-        <span id="search-info" class="search-info"></span>
-        <button id="next-result" class="nav-button">↓</button>
         <input type="text" id="search" placeholder="Search..." />
       </div>
     </div>
@@ -151,23 +164,38 @@
         {% endif %}
       </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
     <script>
       anchors.add();
 
+      const reveals = document.querySelectorAll('.reveal');
+
+      window.addEventListener('scroll', function () {
+        for (let i = 0; i < reveals.length; i++) {
+          const windowHeight = window.innerHeight;
+          const elementTop = reveals[i].getBoundingClientRect().top;
+          const elementVisible = 100;
+
+          if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add('active');
+          } else {
+            reveals[i].classList.remove('active');
+          }
+        }
+      });
+
       const searchInput = document.getElementById('search');
-      const prevResultButton = document.getElementById('prev-result');
-      const nextResultButton = document.getElementById('next-result');
-      const searchInfo = document.getElementById('search-info');
-      const navButtons = document.querySelectorAll('.nav-button');
-      let currentIndex = -1;
       const results = [];
 
-      searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value;
+      searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value.toLowerCase();
+        const content = document.querySelector('.markdown-body');
         const regex = new RegExp(searchTerm, 'gi');
-        const matches = document.querySelectorAll('.markdown-body *');
+        const matches = content.querySelectorAll('*');
+        
         results.length = 0;
+
         matches.forEach(match => {
           if (regex.test(match.textContent)) {
             match.style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
@@ -176,51 +204,7 @@
             match.style.backgroundColor = '';
           }
         });
-        currentIndex = results.length ? 0 : -1;
-        searchInfo.textContent = currentIndex >= 0 ? `${currentIndex + 1}/${results.length}` : '';
-        searchInfo.style.display = results.length > 0 ? 'inline' : 'none';
-        navButtons.forEach(button => button.style.display = results.length > 0 ? 'inline-block' : 'none');
-        if (currentIndex >= 0) {
-          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-          setTimeout(removeHighlights, 5000);
-        } else {
-          navButtons.forEach(button => button.style.display = 'none');
-        }
       });
-
-      function removeHighlights() {
-        results.forEach(match => match.style.backgroundColor = '');
-        if (!searchInput.value) {
-          navButtons.forEach(button => button.style.display = 'none');
-          searchInfo.style.display = 'none';
-        }
-      }
-
-      prevResultButton.addEventListener('click', function() {
-        if (results.length > 0) {
-          currentIndex = (currentIndex > 0) ? currentIndex - 1 : results.length - 1;
-          highlightCurrent();
-        }
-      });
-
-      nextResultButton.addEventListener('click', function() {
-        if (results.length > 0) {
-          currentIndex = (currentIndex + 1) % results.length;
-          highlightCurrent();
-        }
-      });
-
-      function highlightCurrent() {
-        removeHighlights();
-        results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
-        searchInfo.textContent = `${currentIndex + 1}/${results.length}`;
-        results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => {
-          if (searchInput.value) {
-            results[currentIndex].style.backgroundColor = 'rgba(255, 255, 0, 0.5)';
-          }
-        }, 5000);
-      }
     </script>
   </body>
 </html>
