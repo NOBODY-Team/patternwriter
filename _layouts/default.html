@@ -37,37 +37,7 @@
         z-index: 10;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-      }
-
-      .navbar button {
-        background-color: rgba(50, 50, 50, 0.7);
-        border: none;
-        color: white;
-        cursor: pointer;
-        font-size: 20px;
-        height: 30px;
-        width: 30px;
-        border-radius: 5px;
-        margin: 0 5px;
-        display: flex;
-        align-items: center;
         justify-content: center;
-      }
-
-      .search-container {
-        display: flex;
-        align-items: center;
-      }
-
-      .navbar input {
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid lightgray;
-        margin-left: 5px;
-        min-width: 150px;
-        background-color: rgb(38, 38, 38);
-        color: white;
       }
 
       a {
@@ -122,10 +92,10 @@
   </head>
   <body>
     <div class="navbar">
-      <button id="toggle-sidebar">☰</button>
-      <div class="search-container">
-        <input type="text" id="search" placeholder="Search..." />
-      </div>
+      <form action="{{ '/search' | relative_url }}" method="get">
+        <input type="text" name="query" id="search-input" placeholder="Search...">
+        <button type="submit">Search</button>
+      </form>
     </div>
     <div class="content">
       <div class="container-lg px-3 my-5 markdown-body">
