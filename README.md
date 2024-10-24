@@ -59,3 +59,9 @@ Pressing `Submit` will output the written text to the main window.
 | `ctrl + d` | `<align=>` |
 | `ctrl + i` | `<i></i>` |
 | `ctrl + b` | `<b></b>` |
+
+# Contact
+
+### [All contact emails](https://nobodyteam.com/contact)
+
+For any inquiries, requests, issues or anything else related to PatternWriter, email [patternwriter@nobodyteam.com](mailto:patternwriter@nobodyteam.com)
