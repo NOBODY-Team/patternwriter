@@ -33,6 +33,7 @@
         left: 0;
         right: 0;
         background: rgba(30, 30, 30, 0.8);
+        backdrop-filter: blur(10px);
         padding: 10px;
         z-index: 10;
         display: flex;
@@ -54,10 +55,19 @@
         min-width: 150px;
       }
 
-      .search-info {
-        display: none;
+      .search-controls {
+        display: flex;
+        margin-left: 10px;
+      }
+
+      .search-controls button {
+        background-color: rgb(38, 38, 38);
         color: white;
+        border: none;
+        padding: 5px;
+        border-radius: 5px;
         margin-left: 5px;
+        cursor: pointer;
       }
 
       a {
@@ -91,6 +101,10 @@
         border-left: 5px solid #ffcc00;
       }
 
+      ul, ol, li, img {
+        border-radius: 10px;
+      }
+
       .hidden {
         opacity: 0;
         transition: opacity 0.5s ease-in-out;
@@ -106,6 +120,7 @@
         background-color: white;
         color: black;
         padding: 10px;
+        border-radius: 8px;
       }
 
       th {
@@ -133,6 +148,10 @@
     <div class="navbar">
       <div class="search-container">
         <input type="text" id="search" placeholder="Search..." />
+        <div class="search-controls">
+          <button id="search-up">⬆</button>
+          <button id="search-down">⬇</button>
+        </div>
       </div>
     </div>
     <div class="content">
@@ -190,6 +209,20 @@
 
         currentIndex = results.length ? 0 : -1;
         if (currentIndex >= 0) {
+          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+
+      document.getElementById('search-up').addEventListener('click', function() {
+        if (results.length > 0) {
+          currentIndex = (currentIndex - 1 + results.length) % results.length;
+          results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+
+      document.getElementById('search-down').addEventListener('click', function() {
+        if (results.length > 0) {
+          currentIndex = (currentIndex + 1) % results.length;
           results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       });
