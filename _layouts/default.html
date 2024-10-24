@@ -57,16 +57,16 @@
 
       .search-controls {
         display: flex;
-        margin-left: 10px;
+        margin-right: 10px;
       }
 
       .search-controls button {
-        background-color: rgb(38, 38, 38);
-        color: white;
+        background-color: white;
+        color: black;
         border: none;
         padding: 5px;
         border-radius: 5px;
-        margin-left: 5px;
+        margin-right: 5px;
         cursor: pointer;
       }
 
@@ -142,16 +142,22 @@
           padding: 5px;
         }
       }
+
+      .result-count {
+        color: white;
+        margin-left: 10px;
+      }
     </style>
   </head>
   <body>
     <div class="navbar">
       <div class="search-container">
-        <input type="text" id="search" placeholder="Search..." />
         <div class="search-controls">
           <button id="search-up">⬆</button>
           <button id="search-down">⬇</button>
         </div>
+        <input type="text" id="search" placeholder="Search..." />
+        <span class="result-count" id="result-count"></span>
       </div>
     </div>
     <div class="content">
@@ -193,6 +199,7 @@
       const searchInput = document.getElementById('search');
       const results = [];
       let currentIndex = -1;
+      const resultCount = document.getElementById('result-count');
 
       searchInput.addEventListener('input', function() {
         const searchTerm = searchInput.value.toLowerCase();
@@ -211,12 +218,15 @@
         if (currentIndex >= 0) {
           results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+
+        resultCount.textContent = results.length > 0 ? `${currentIndex + 1}/${results.length}` : '';
       });
 
       document.getElementById('search-up').addEventListener('click', function() {
         if (results.length > 0) {
           currentIndex = (currentIndex - 1 + results.length) % results.length;
           results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          resultCount.textContent = `${currentIndex + 1}/${results.length}`;
         }
       });
 
@@ -224,6 +234,7 @@
         if (results.length > 0) {
           currentIndex = (currentIndex + 1) % results.length;
           results[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          resultCount.textContent = `${currentIndex + 1}/${results.length}`;
         }
       });
     </script>
