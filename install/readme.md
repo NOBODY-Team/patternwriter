@@ -1,1 +1,1 @@
-Page in progress.
+Installations for both the software and source coming soon.
